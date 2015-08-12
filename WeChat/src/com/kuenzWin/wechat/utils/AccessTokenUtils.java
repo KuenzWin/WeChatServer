@@ -10,9 +10,9 @@ import com.kuenzWin.wechat.domin.AccessToken;
 /**
  * AccessToken获取工具类
  * 因为token的获取次数有限(2000次)，不可能无限制获取，所以将token信息写入一个文件中，获取token时读取这个文件
- * ，若文件中的token信息未失效， 即token的有效期未过，则使用旧的token，若已过，则获取新的token，并将其id和有效期写入文件中
+ * ，获取其创建时间与现在获取时间做对比，若文件中的token信息未失效，
+ * 即token的有效期未过，则使用旧的token，若已过，则获取新的token，并将其id和有效期以及创建时间写入文件中
  * 
- * @author 温坤哲
  * @date 2015-8-2
  */
 public class AccessTokenUtils {
@@ -84,11 +84,18 @@ public class AccessTokenUtils {
 			try {
 				if (fis != null)
 					fis.close();
-				if (fos != null)
-					fos.close();
+				
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+			}finally{
+				if (fos != null)
+					try {
+						fos.close();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 			}
 		}
 
